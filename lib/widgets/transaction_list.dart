@@ -1,19 +1,19 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, sized_box_for_whitespace
+
 import 'package:expense_tracker/models/transaction.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
-
   final List<Transaction> transactions;
 
   const TransactionList(this.transactions);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: transactions.map((tx) {
+    return Container(
+      height: 300,
+      child: ListView.builder(itemBuilder: (ctx, index) {
       return Card(
         child: Row(
           children: [
@@ -23,7 +23,7 @@ class TransactionList extends StatelessWidget {
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.purple)),
               child: Text(
-                '\$${tx.amount}',
+                '\$${transactions[index].amount.toStringAsFixed(2)}',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -34,11 +34,11 @@ class TransactionList extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  tx.title,
+                  transactions[index].title,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  DateFormat.yMMMd().format(tx.date),
+                  DateFormat.yMMMd().format(transactions[index].date),
                   style: TextStyle(color: Colors.grey),
                 )
               ],
@@ -46,6 +46,6 @@ class TransactionList extends StatelessWidget {
           ],
         ),
       );
-    }).toList());
+    }));
   }
 }

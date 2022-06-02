@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables, deprecated_member_use, sort_child_properties_last
+
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class NewTransactions extends StatelessWidget {
 
@@ -9,7 +10,21 @@ class NewTransactions extends StatelessWidget {
 
   final addTransaction;
 
-  NewTransactions(this.addTransaction);
+  NewTransactions(this.addTransaction, {Key key}) : super(key: key);
+
+  void submitData(){
+    
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+
+    if(enteredTitle == '' || enteredAmount <= 0){
+      return;
+    }
+    
+    addTransaction(enteredTitle,enteredAmount);
+    
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +37,16 @@ class NewTransactions extends StatelessWidget {
                     TextField(
                       controller: titleController,
                       decoration: InputDecoration(labelText: 'Title'),
-                      onChanged: (value) {
-
-                      },
+                      onSubmitted: (_) => submitData
                     ),
                     TextField(
                       controller: amountController,
                       decoration: InputDecoration(labelText: 'Amount'),
-                      onChanged: (value) {
-
-                      },
+                      keyboardType: TextInputType.numberWithOptions(decimal: true),
+                      onSubmitted: (_) => submitData ,
                     ),
                     FlatButton(
-                        onPressed: () {
-                         addTransaction(titleController.text, double.parse(amountController.text));
-                        },
+                        onPressed: submitData,
                         child: Text('Add Transaction'),
                         textColor: Colors.purple)
                   ],
